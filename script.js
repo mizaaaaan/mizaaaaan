@@ -69,6 +69,9 @@ function initPage(){
   // what made the section start pinning/animating at the wrong scroll
   // offset (feeling like you "enter" it before it's actually ready).
   initWorks();
+  initExperience();
+  initEducation();
+  initCertifications();
   initJournal();
   initLazyLoad();
   initGSAP();
@@ -232,7 +235,7 @@ if(document.fonts && document.fonts.ready){
    HERO — Role cycling
 ─────────────────────────────────────────── */
 function initRoles(){
-  const roles = ['Creative','Designer','Founder','Graduate'];
+  const roles = ['IT Specialist','Web Developer','Pharmacist','Designer'];
   let idx = 0;
   const el = document.getElementById('role-word');
   const id = setInterval(() => {
@@ -344,7 +347,8 @@ function initNavLinks(){
   });
 
   // Update active on scroll
-  const sections = ['hero','works','journal','explorations','stats','contact'];
+  const sections = ['hero','about','works','experience','education','certifications','journal','explorations','stats','contact'];
+  const workGroup = ['experience','education','certifications','journal','explorations'];
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if(e.isIntersecting){
@@ -353,8 +357,7 @@ function initNavLinks(){
           const href = l.getAttribute('href');
           l.classList.toggle('active',
             href === '#'+id ||
-            (id === 'journal' && href === '#works') ||
-            (id === 'explorations' && href === '#works')
+            (workGroup.includes(id) && href === '#works')
           );
         });
       }
@@ -394,10 +397,45 @@ function initButtons(){
    CONTENT — Works & Journal (data-driven)
 ─────────────────────────────────────────── */
 const works = [
-  { src: 'images/IMG_20220505_230456_Original.jpg', title: 'Automotive Motion' },
-  { src: 'images/IMG_0554_Original.jpg', title: 'Urban Architecture' },
-  { src: 'images/IMG_1523_Original.jpg', title: 'Human Perspective' },
-  { src: 'images/IMG_2509_Original.jpg', title: 'Brand Identity' }
+  { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting' },
+  { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development' },
+  { src: 'https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1600&q=80', title: 'Pharmacy & Patient Care' },
+  { src: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=1600&q=80', title: 'Medical Assistance' }
+];
+
+const education = [
+  { period:'2016 – 2026', title:'Bachelor of Science in Chemistry', org:'National University of Bangladesh', desc:'Obtained a Bachelor of Science in Chemistry, focusing on chemical analysis and laboratory techniques.' },
+  { period:'2016 – 2017', title:'Certificate in Health Technology and Services', org:'Noakhali Paramedical College', desc:'Earned a Certificate in Health Technology and Services, enhancing healthcare delivery skills.' }
+];
+
+const certifications = [
+  'IT Support Technician',
+  'Web Development Course',
+  'Certificate in Pharma Technology',
+  'Pharmacy Trade License',
+  'Diploma in Nursing',
+  'Professional Driving License',
+  'NSDA Driving, Level-3'
+];
+
+const skills = [
+  'IT Support & Troubleshooting',
+  'Web Development',
+  'Graphic Design & UI Design',
+  'Computer & Office Applications',
+  'First Aid & Emergency Care',
+  'Medication Knowledge & Nursing'
+];
+
+const languages = ['English', 'Arabic', 'Urdu/Hindi'];
+
+const experience = [
+  { period:'2016 – 2016', title:'IT Support Technician', org:'Noakhali Technical Training Center', desc:'Provided technical support, system maintenance, troubleshooting, software installation, and user assistance.' },
+  { period:'2017 – 2017', title:'Web Development', org:'Learning & Earning Development Project', desc:'Completed hands-on training in web design and development.' },
+  { period:'2018 – 2021', title:'Medical Assistant', org:'Al-Habib Hospital Pvt.', desc:'Administered precise injections, emergency treatment, and first aid for patient care.' },
+  { period:'2021 – 2022', title:'Office Aide', org:'Life Line Hospital Pvt.', desc:'Assessed, diagnosed, and treated patients, provided care, resulting in 98% satisfaction.' },
+  { period:'2022 – 2025', title:'Owner & Pharmacist', org:'Dream Pharmacy', desc:'Responsible for managing prescriptions, patient consultations, and ensuring accurate medication dispensing.' },
+  { period:'2025 – 2026', title:'Pharmacy Manager', org:'Shah Ali Pharmacy', desc:'Handled medication dispensing, patient guidance, prescription processing, and pharmacy operations.' }
 ];
 
 const journal = [
@@ -419,6 +457,58 @@ function initWorks(){
       </div>
     </div>
   `).join('');
+}
+
+function initExperience(){
+  const list = document.getElementById('experience-list');
+  if(!list) return;
+  list.innerHTML = experience.map(x => `
+    <div class="timeline-item reveal">
+      <div class="timeline-period">${x.period}</div>
+      <div class="timeline-dot-col"><span class="timeline-dot"></span></div>
+      <div class="timeline-body">
+        <div class="timeline-title">${x.title}</div>
+        <div class="timeline-org">${x.org}</div>
+        <p class="timeline-desc">${x.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initEducation(){
+  const list = document.getElementById('education-list');
+  if(!list) return;
+  list.innerHTML = education.map(x => `
+    <div class="timeline-item reveal">
+      <div class="timeline-period">${x.period}</div>
+      <div class="timeline-dot-col"><span class="timeline-dot"></span></div>
+      <div class="timeline-body">
+        <div class="timeline-title">${x.title}</div>
+        <div class="timeline-org">${x.org}</div>
+        <p class="timeline-desc">${x.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initCertifications(){
+  const grid = document.getElementById('cert-grid');
+  if(grid){
+    grid.innerHTML = certifications.map(c => `
+      <div class="cert-badge reveal">
+        <span class="cert-badge-icon">✓</span>
+        <span class="cert-badge-text">${c}</span>
+      </div>
+    `).join('');
+  }
+  const skillsGrid = document.getElementById('skills-grid');
+  if(skillsGrid){
+    skillsGrid.innerHTML = skills.map(s => `<span class="chip reveal">${s}</span>`).join('');
+  }
+  const langList = document.getElementById('lang-list');
+  if(langList){
+    langList.innerHTML = languages.map(l => `<span class="chip chip-outline reveal">${l}</span>`).join('');
+  }
 }
 
 function initJournal(){
