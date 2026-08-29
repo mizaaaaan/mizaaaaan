@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Md Mizanur Rahman — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com"/>
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<link rel="preconnect" href="https://stream.mux.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.7.0/dist/hls.min.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+  <div id="loading-label">Md Mizanur Rahman</div>
+  <div id="loading-word">Design</div>
+  <div id="loading-counter">000</div>
+  <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-pill" id="nav-pill">
+    <button class="nav-logo" id="theme-toggle" title="Toggle theme" aria-label="Toggle light/dark mode">
+      <div class="nav-logo-inner">MR</div>
+    </button>
+    <div class="nav-divider"></div>
+    <a class="nav-link active" href="#hero">Home</a>
+    <a class="nav-link" href="#works">Work</a>
+    <a class="nav-link" href="#contact">Resume</a>
+    <div class="nav-divider"></div>
+    <a class="nav-sayhi" href="https://wa.me/8801830962035?text=Hello%20Mizan%20!" target="_blank" rel="noopener">
+      <span>Say hi ↗</span>
+    </a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <video id="hero-video" autoplay muted loop playsinline></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-fade"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow blur-in">COLLECTION '26</p>
+    <h1 class="hero-name name-reveal">Md Mizanur Rahman</h1>
+    <p class="hero-role blur-in">
+      A <span class="role-word" id="role-word">Creative</span> lives in Noakhali.
+    </p>
+    <p class="hero-desc blur-in">
+      Designing seamless digital interactions by focusing on the unique nuances which bring systems to life.
+    </p>
+    <div class="hero-btns blur-in">
+      <button class="btn-primary" data-scroll="works">See Works</button>
+      <button class="btn-outline" data-scroll="contact">Reach out...</button>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Works -->
+<section id="works" style="background:var(--bg); padding: 3rem 0;">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-header-left">
+        <div class="eyebrow-row">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">Selected Work</span>
+        </div>
+        <h2 class="section-heading">Featured <em>projects</em></h2>
+        <p class="section-subtext">A selection of projects I've worked on, from concept to launch.</p>
+      </div>
+      <button class="btn-ghost" data-alert="All work coming soon!">
+        <div class="btn-ghost-inner"><span>View all work</span><span>→</span></div>
+      </button>
+    </div>
+
+    <div class="works-grid" id="works-grid"></div>
+  </div>
+</section>
+
+<!-- Journal -->
+<section id="journal" style="background:var(--bg); padding: 3rem 0;">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-header-left">
+        <div class="eyebrow-row">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">Journal</span>
+        </div>
+        <h2 class="section-heading">Recent <em>thoughts</em></h2>
+        <p class="section-subtext">Perspectives on design, technology, and the spaces between.</p>
+      </div>
+      <button class="btn-ghost" data-alert="All articles coming soon!">
+        <div class="btn-ghost-inner"><span>View all</span><span>→</span></div>
+      </button>
+    </div>
+
+    <div class="journal-list" id="journal-list"></div>
+  </div>
+</section>
+
+<!-- Explorations -->
+<section id="explorations">
+  <div class="explore-pin" id="explore-pin">
+    <div class="explore-pin-content">
+      <div class="eyebrow-row" style="justify-content:center; margin-bottom:0.75rem;">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Explorations</span>
+        <div class="eyebrow-line"></div>
+      </div>
+      <h2 class="section-heading" style="font-size:clamp(2rem,6vw,4rem); text-align:center;">Visual <em>playground</em></h2>
+      <p style="font-size:0.85rem; color:var(--muted); max-width:22rem; margin: 0.75rem auto 0; text-align:center;">Side projects, experiments, and visual explorations.</p>
+      <div style="display:flex; justify-content:center; margin-top:1.5rem;">
+        <button class="dribbble-btn">
+          <div class="dribbble-btn-inner"><span>View on Linkedin</span><span>↗</span></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="explore-gallery" id="explore-gallery">
+    <div class="explore-item" data-img="images/20220410_021706_Original.png">
+      <img src="images/20220410_021706_Original.png" alt="" loading="lazy"/>
+    </div>
+    <div class="explore-item" data-img="images/IMG_0485_Original.jpeg">
+      <img src="images/IMG_0485_Original.jpeg" alt="" loading="lazy"/>
+    </div>
+    <div class="explore-item" data-img="images/IMG_1864_Original.jpeg">
+      <img src="images/IMG_1864_Original.jpeg" alt="" loading="lazy"/>
+    </div>
+    <div class="explore-item" data-img="images/IMG_2012.jpeg">
+      <img src="images/IMG_2012.jpeg" alt="" loading="lazy"/>
+    </div>
+    <div class="explore-item" data-img="images/IMG_2473_Original.jpeg">
+      <img src="images/IMG_2473_Original.jpeg" alt="" loading="lazy"/>
+    </div>
+    <div class="explore-item" data-img="images/IMG_2489_Original.jpeg">
+      <img src="images/IMG_2489_Original.jpeg" alt="" loading="lazy"/>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats">
+  <div class="stats-grid reveal">
+    <div>
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div>
+      <div class="stat-num">30+</div>
+      <div class="stat-label">Projects Done</div>
+    </div>
+    <div>
+      <div class="stat-num">200%</div>
+      <div class="stat-label">Satisfied Clients</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact / Footer -->
+<section id="contact">
+  <video id="footer-video" autoplay muted loop playsinline></video>
+  <div class="footer-overlay"></div>
+
+  <div class="footer-content">
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marquee-track">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <div class="footer-cta reveal">
+      <h2>Let's build something <em>great</em></h2>
+      <p>Open for freelance work and full-time opportunities.</p>
+      <a href="https://canva.link/mizan-cv" class="email-btn" target="_blank">
+
+        <div class="email-btn-inner">View Resume ↗</div>
+      </a>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-socials">
+        <a class="footer-social" href="#">Facebook</a>
+        <a class="footer-social" href="#">LinkedIn</a>
+        <a class="footer-social" href="#">Youtube</a>
+        <a class="footer-social" href="https://github.com/mizaaaan" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="footer-available">
+        <div class="status-dot"></div>
+        <span>Available for projects</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <button id="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
