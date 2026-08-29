@@ -1,5 +1,5 @@
 ## Hi there 👋
-https://mizaaaan.github.io/mizaaaaan
+https://mizan962035.github.io/mizaaaan
 <!--
 **mizaaaaan/mizaaaaan** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
