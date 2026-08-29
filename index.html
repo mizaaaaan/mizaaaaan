@@ -6,6 +6,23 @@
 <meta name="description" content="Md Mizanur Rahman — Creative designer and founder based in Noakhali. Portfolio showcasing design, motion, and brand identity work."/>
 <meta name="theme-color" content="#0a0a0a"/>
 <title>Md Mizanur Rahman — Portfolio</title>
+<script>
+/* THEME — runs synchronously, before first paint, to avoid a dark/light flash.
+   (Previously this lived at the top of script.js, but script.js loads with
+   `defer`, so it only ran AFTER the whole page had parsed — the flash it was
+   meant to prevent could still happen. Keeping it inline here is what
+   actually applies it "ASAP".) */
+(function(){
+  let theme = null;
+  try { theme = localStorage.getItem('theme'); } catch(e){}
+  if(!theme){
+    let prefersDark = false;
+    try { prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){}
+    theme = prefersDark ? 'dark' : 'light';
+  }
+  document.documentElement.dataset.theme = theme;
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com"/>
@@ -134,22 +151,22 @@
 
   <div class="explore-gallery" id="explore-gallery">
     <div class="explore-item" data-img="images/20220410_021706_Original.jpg">
-      <img src="images/20220410_021706_Original.jpg" alt="" loading="lazy" decoding="async" width="1600" height="1600"/>
+      <img class="lazy-img" data-src="images/20220410_021706_Original.jpg" alt="" decoding="async" width="1600" height="1600"/>
     </div>
     <div class="explore-item" data-img="images/IMG_0485_Original.jpg">
-      <img src="images/IMG_0485_Original.jpg" alt="" loading="lazy" decoding="async" width="1600" height="1200"/>
+      <img class="lazy-img" data-src="images/IMG_0485_Original.jpg" alt="" decoding="async" width="1600" height="1200"/>
     </div>
     <div class="explore-item" data-img="images/IMG_1864_Original.jpg">
-      <img src="images/IMG_1864_Original.jpg" alt="" loading="lazy" decoding="async" width="1600" height="1200"/>
+      <img class="lazy-img" data-src="images/IMG_1864_Original.jpg" alt="" decoding="async" width="1600" height="1200"/>
     </div>
     <div class="explore-item" data-img="images/IMG_2012.jpg">
-      <img src="images/IMG_2012.jpg" alt="" loading="lazy" decoding="async" width="1600" height="1067"/>
+      <img class="lazy-img" data-src="images/IMG_2012.jpg" alt="" decoding="async" width="1600" height="1067"/>
     </div>
     <div class="explore-item" data-img="images/IMG_2473_Original.jpg">
-      <img src="images/IMG_2473_Original.jpg" alt="" loading="lazy" decoding="async" width="1008" height="1792"/>
+      <img class="lazy-img" data-src="images/IMG_2473_Original.jpg" alt="" decoding="async" width="1008" height="1792"/>
     </div>
     <div class="explore-item" data-img="images/IMG_2489_Original.jpg">
-      <img src="images/IMG_2489_Original.jpg" alt="" loading="lazy" decoding="async" width="1008" height="1792"/>
+      <img class="lazy-img" data-src="images/IMG_2489_Original.jpg" alt="" decoding="async" width="1008" height="1792"/>
     </div>
   </div>
 </section>

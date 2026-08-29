@@ -1,16 +1,6 @@
-/* ───────────────────────────────────────────
-   THEME — apply ASAP to avoid dark/light flash
-─────────────────────────────────────────── */
-(function(){
-  let theme = null;
-  try { theme = localStorage.getItem('theme'); } catch(e){}
-  if(!theme){
-    let prefersDark = false;
-    try { prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){}
-    theme = prefersDark ? 'dark' : 'light';
-  }
-  document.documentElement.dataset.theme = theme;
-})();
+/* Theme detection now runs inline in <head> (index.html) so it applies
+   before first paint — see the comment there for why it moved out of
+   this deferred file. */
 
 /* ───────────────────────────────────────────
    LOADING SCREEN
@@ -70,11 +60,20 @@
 ─────────────────────────────────────────── */
 function initPage(){
   initVideo();
+  // Works/Journal inject real content into what were empty grid containers,
+  // which changes the page's height. That MUST happen before initGSAP(),
+  // because GSAP's ScrollTrigger measures scroll positions (like the
+  // Explorations pin's "top top"/"bottom bottom") against the page height
+  // at the moment it's set up. Previously initGSAP() ran first, so every
+  // Explorations trigger was calculated against a shorter page — that's
+  // what made the section start pinning/animating at the wrong scroll
+  // offset (feeling like you "enter" it before it's actually ready).
+  initWorks();
+  initJournal();
+  initLazyLoad();
   initGSAP();
   initRoles();
   initMarquee();
-  initWorks();
-  initJournal();
   initScrollReveal();
   initLightbox();
   initNavScroll();
@@ -119,6 +118,45 @@ function initVideo(){
   } else if(footer){
     loadHLS(footer, src);
   }
+}
+
+/* ───────────────────────────────────────────
+   LAZY-LOADED IMAGES
+   Native `loading="lazy"` leaves the fetch-start distance up to the
+   browser, which is often too small once a fast-scrolling / pinned
+   section (like Explorations) is involved — the section becomes visible
+   before the image has actually finished (or even started) downloading.
+   This preloads images a good ~1200px BEFORE they reach the viewport, and
+   fades them in once decoded, so nothing pops in empty mid-scroll.
+─────────────────────────────────────────── */
+function initLazyLoad(){
+  const imgs = document.querySelectorAll('img[data-src]');
+  if(!imgs.length) return;
+
+  const loadImg = (img) => {
+    const src = img.dataset.src;
+    if(!src) return;
+    delete img.dataset.src;
+    img.addEventListener('load', () => img.classList.add('loaded'), { once:true });
+    img.src = src;
+    if(img.complete) img.classList.add('loaded');
+  };
+
+  if(!('IntersectionObserver' in window)){
+    imgs.forEach(loadImg);
+    return;
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        loadImg(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '1200px 0px', threshold: 0 });
+
+  imgs.forEach(img => obs.observe(img));
 }
 
 /* ───────────────────────────────────────────
@@ -176,6 +214,18 @@ function initGSAP(){
       pinSpacing:false
     });
   }
+}
+
+/* Safety net: if web fonts finish swapping in, or any late-loading asset
+   changes layout, after initGSAP() already measured the page, refresh
+   ScrollTrigger so pin/parallax offsets stay correct instead of drifting. */
+window.addEventListener('load', () => {
+  if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+});
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(() => {
+    if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+  }).catch(()=>{});
 }
 
 /* ───────────────────────────────────────────
@@ -362,7 +412,7 @@ function initWorks(){
   if(!grid) return;
   grid.innerHTML = works.map(w => `
     <div class="work-card reveal">
-      <img src="${w.src}" alt="${w.title}" loading="lazy" decoding="async" width="1600" height="1200"/>
+      <img class="lazy-img" data-src="${w.src}" alt="${w.title}" decoding="async" width="1600" height="1200"/>
       <div class="work-card-halftone"></div>
       <div class="work-card-hover">
         <div class="work-card-label">View — <em>${w.title}</em></div>
@@ -376,7 +426,7 @@ function initJournal(){
   if(!list) return;
   list.innerHTML = journal.map(j => `
     <div class="journal-item reveal">
-      <img class="journal-img" src="${j.img}" alt="" loading="lazy" decoding="async" width="48" height="48"/>
+      <img class="journal-img lazy-img" data-src="${j.img}" alt="" decoding="async" width="48" height="48"/>
       <div>
         <div class="journal-title">${j.title}</div>
         <div class="journal-meta">${j.meta}</div>
