@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Md Mizanur Rahman — Creative designer and founder based in Noakhali. Portfolio showcasing design, motion, and brand identity work."/>
+<meta name="theme-color" content="#0a0a0a"/>
 <title>Md Mizanur Rahman — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -10,9 +12,9 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
 <link rel="preconnect" href="https://stream.mux.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.7.0/dist/hls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.7.0/dist/hls.min.js" defer></script>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -36,7 +38,7 @@
     <a class="nav-link" href="#works">Work</a>
     <a class="nav-link" href="#contact">Resume</a>
     <div class="nav-divider"></div>
-    <a class="nav-sayhi" href="https://wa.me/8801830962035?text=Hello%20Mizan%20!" target="_blank" rel="noopener">
+    <a class="nav-sayhi" href="https://wa.me/8801830962035?text=Hello%20Mizan%20!" target="_blank" rel="noopener noreferrer">
       <span>Say hi ↗</span>
     </a>
   </div>
@@ -70,7 +72,7 @@
 </section>
 
 <!-- Works -->
-<section id="works" style="background:var(--bg); padding: 3rem 0;">
+<section id="works">
   <div class="section-wrap">
     <div class="section-header reveal">
       <div class="section-header-left">
@@ -91,7 +93,7 @@
 </section>
 
 <!-- Journal -->
-<section id="journal" style="background:var(--bg); padding: 3rem 0;">
+<section id="journal">
   <div class="section-wrap">
     <div class="section-header reveal">
       <div class="section-header-left">
@@ -123,9 +125,9 @@
       <h2 class="section-heading" style="font-size:clamp(2rem,6vw,4rem); text-align:center;">Visual <em>playground</em></h2>
       <p style="font-size:0.85rem; color:var(--muted); max-width:22rem; margin: 0.75rem auto 0; text-align:center;">Side projects, experiments, and visual explorations.</p>
       <div style="display:flex; justify-content:center; margin-top:1.5rem;">
-        <button class="dribbble-btn">
+        <a class="dribbble-btn" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
           <div class="dribbble-btn-inner"><span>View on Linkedin</span><span>↗</span></div>
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -193,10 +195,10 @@
 
     <div class="footer-bar">
       <div class="footer-socials">
-        <a class="footer-social" href="#">Facebook</a>
-        <a class="footer-social" href="#">LinkedIn</a>
-        <a class="footer-social" href="#">Youtube</a>
-        <a class="footer-social" href="https://github.com/mizaaaan" target="_blank" rel="noopener">GitHub</a>
+        <a class="footer-social" href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="footer-social" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="footer-social" href="https://youtube.com" target="_blank" rel="noopener noreferrer">Youtube</a>
+        <a class="footer-social" href="https://github.com/mizaaaan" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
       <div class="footer-available">
         <div class="status-dot"></div>
@@ -207,11 +209,11 @@
 </section>
 
 <!-- Lightbox -->
-<div id="lightbox">
-  <button id="lightbox-close">✕</button>
-  <img id="lightbox-img" src="" alt=""/>
+<div id="lightbox" role="dialog" aria-label="Image lightbox">
+  <button id="lightbox-close" aria-label="Close lightbox">✕</button>
+  <img id="lightbox-img" src="" alt="" loading="lazy"/>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>

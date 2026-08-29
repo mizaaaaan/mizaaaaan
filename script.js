@@ -88,9 +88,12 @@ function initPage(){
 ─────────────────────────────────────────── */
 function loadHLS(videoEl, src){
   if(typeof Hls !== 'undefined' && Hls.isSupported()){
-    const hls = new Hls();
+    const hls = new Hls({ maxBufferLength: 30, startFragPrefetch: true });
     hls.loadSource(src);
     hls.attachMedia(videoEl);
+    hls.on(Hls.Events.ERROR, (_, data) => {
+      if(data.fatal) console.warn('HLS fatal error:', data.type, data.details);
+    });
   } else if(videoEl.canPlayType('application/vnd.apple.mpegurl')){
     videoEl.src = src;
   }
@@ -173,13 +176,15 @@ function initRoles(){
   const roles = ['Creative','Designer','Founder','Graduate'];
   let idx = 0;
   const el = document.getElementById('role-word');
-  setInterval(() => {
+  const id = setInterval(() => {
     el.style.animation = 'none';
     void el.offsetWidth;
     idx = (idx+1) % roles.length;
     el.textContent = roles[idx];
     el.style.animation = 'roleFadeIn 0.4s ease-out';
   }, 2000);
+  // Cleanup on page unload to prevent memory leak
+  window.addEventListener('beforeunload', () => clearInterval(id));
 }
 
 /* ───────────────────────────────────────────
@@ -189,7 +194,7 @@ function initMarquee(){
   if(typeof gsap === 'undefined') return;
   const track = document.getElementById('marquee-track');
   const text = 'BUILDING THE FUTURE • ';
-  for(let i=0;i<12;i++){
+  for(let i=0;i<6;i++){
     const span = document.createElement('span');
     span.className = 'marquee-text';
     span.textContent = text;
@@ -228,8 +233,10 @@ function initLightbox(){
   document.querySelectorAll('.explore-item').forEach(item => {
     item.addEventListener('click', () => {
       const src = item.dataset.img;
-      document.getElementById('lightbox-img').src = src;
+      const lightboxImg = document.getElementById('lightbox-img');
+      lightboxImg.src = src;
       document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
   });
   document.getElementById('lightbox').addEventListener('click', function(e){
@@ -239,6 +246,7 @@ function initLightbox(){
 }
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
@@ -247,8 +255,15 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox()
 ─────────────────────────────────────────── */
 function initNavScroll(){
   const pill = document.getElementById('nav-pill');
+  let ticking = false;
   window.addEventListener('scroll', () => {
-    pill.classList.toggle('scrolled', window.scrollY > 100);
+    if(!ticking){
+      requestAnimationFrame(() => {
+        pill.classList.toggle('scrolled', window.scrollY > 100);
+        ticking = false;
+      });
+      ticking = true;
+    }
   }, { passive:true });
 }
 
