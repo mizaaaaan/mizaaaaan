@@ -143,22 +143,31 @@ function initGSAP(){
   // Exploration parallax
   const items = document.querySelectorAll('.explore-item');
   if(items.length){
+    // Column 1 (odd items): scroll up
     const col1 = [items[0], items[2], items[4]];
+    // Column 2 (even items): scroll down
     const col2 = [items[1], items[3], items[5]];
-    col1.forEach(el => {
-      gsap.to(el, {
-        y: -120, ease:'none',
-        scrollTrigger:{ trigger:'#explorations', start:'top bottom', end:'bottom top', scrub:1 }
-      });
+
+    col1.forEach((el, i) => {
+      gsap.fromTo(el,
+        { y: 80 + i * 20 },
+        {
+          y: -(80 + i * 20), ease:'none',
+          scrollTrigger:{ trigger:'#explorations', start:'top bottom', end:'bottom top', scrub:true }
+        }
+      );
     });
-    col2.forEach(el => {
-      gsap.to(el, {
-        y: 120, ease:'none',
-        scrollTrigger:{ trigger:'#explorations', start:'top bottom', end:'bottom top', scrub:1 }
-      });
+    col2.forEach((el, i) => {
+      gsap.fromTo(el,
+        { y: -(60 + i * 20) },
+        {
+          y: 60 + i * 20, ease:'none',
+          scrollTrigger:{ trigger:'#explorations', start:'top bottom', end:'bottom top', scrub:true }
+        }
+      );
     });
 
-    // Pin center content
+    // Pin center content while scrolling through section
     ScrollTrigger.create({
       trigger:'#explorations',
       start:'top top',
