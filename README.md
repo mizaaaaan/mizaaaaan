@@ -1,4 +1,4 @@
-# https://mizaaaaa.github.io/mizaaaan
+# https://mizaaaaan.github.io/mizaaaan/
 ## Hi there 👋
 <!--
 **mizaaaaan/mizaaaaan** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
