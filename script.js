@@ -320,10 +320,10 @@ function initButtons(){
    CONTENT — Works & Journal (data-driven)
 ─────────────────────────────────────────── */
 const works = [
-  { src: 'images/IMG_20220505_230456_Original.jpeg', title: 'Automotive Motion' },
-  { src: 'images/IMG_0554_Original.jpeg', title: 'Urban Architecture' },
-  { src: 'images/IMG_1523_Original.jpeg', title: 'Human Perspective' },
-  { src: 'images/IMG_2509_Original.jpeg', title: 'Brand Identity' }
+  { src: 'images/IMG_20220505_230456_Original.jpg', title: 'Automotive Motion' },
+  { src: 'images/IMG_0554_Original.jpg', title: 'Urban Architecture' },
+  { src: 'images/IMG_1523_Original.jpg', title: 'Human Perspective' },
+  { src: 'images/IMG_2509_Original.jpg', title: 'Brand Identity' }
 ];
 
 const journal = [
@@ -338,7 +338,7 @@ function initWorks(){
   if(!grid) return;
   grid.innerHTML = works.map(w => `
     <div class="work-card reveal">
-      <img src="${w.src}" alt="${w.title}" loading="lazy" decoding="async"/>
+      <img src="${w.src}" alt="${w.title}" loading="lazy" decoding="async" width="1600" height="1200"/>
       <div class="work-card-halftone"></div>
       <div class="work-card-hover">
         <div class="work-card-label">View — <em>${w.title}</em></div>
