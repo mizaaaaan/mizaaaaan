@@ -419,12 +419,12 @@ const certifications = [
 ];
 
 const skills = [
-  'IT Support & Troubleshooting',
-  'Web Development',
-  'Graphic Design & UI Design',
-  'Computer & Office Applications',
-  'First Aid & Emergency Care',
-  'Medication Knowledge & Nursing'
+  { name: 'IT Support & Troubleshooting', pct: 95 },
+  { name: 'Web Development', pct: 88 },
+  { name: 'Graphic Design & UI Design', pct: 82 },
+  { name: 'Computer & Office Applications', pct: 90 },
+  { name: 'First Aid & Emergency Care', pct: 78 },
+  { name: 'Medication Knowledge & Nursing', pct: 85 }
 ];
 
 const languages = ['English', 'Arabic', 'Urdu/Hindi'];
@@ -503,7 +503,18 @@ function initCertifications(){
   }
   const skillsGrid = document.getElementById('skills-grid');
   if(skillsGrid){
-    skillsGrid.innerHTML = skills.map(s => `<span class="chip reveal">${s}</span>`).join('');
+    skillsGrid.classList.add('skill-bars');
+    skillsGrid.innerHTML = skills.map(s => `
+      <div class="skill-bar reveal">
+        <div class="skill-bar-head">
+          <span class="skill-bar-name">${s.name}</span>
+          <span class="skill-bar-pct">${s.pct}%</span>
+        </div>
+        <div class="skill-bar-track">
+          <div class="skill-bar-fill" style="--w:${s.pct}%"></div>
+        </div>
+      </div>
+    `).join('');
   }
   const langList = document.getElementById('lang-list');
   if(langList){
