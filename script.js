@@ -83,6 +83,9 @@ function initPage(){
   initNavLinks();
   initThemeToggle();
   initButtons();
+  initBackToTop();
+  initScrollProgress();
+  initToast();
 }
 
 /* ───────────────────────────────────────────
@@ -289,28 +292,84 @@ function initScrollReveal(){
 }
 
 /* ───────────────────────────────────────────
-   LIGHTBOX
+   LIGHTBOX (accessible: focus trap, arrow nav)
 ─────────────────────────────────────────── */
 function initLightbox(){
-  document.querySelectorAll('.explore-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const src = item.dataset.img;
-      const lightboxImg = document.getElementById('lightbox-img');
-      lightboxImg.src = src;
-      document.getElementById('lightbox').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  const items = document.querySelectorAll('.explore-item');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = lightbox.querySelector('.lightbox-prev');
+  const nextBtn = lightbox.querySelector('.lightbox-next');
+  let activeIndex = 0;
+  let lastFocused = null;
+
+  function openLightbox(index){
+    activeIndex = index;
+    lastFocused = document.activeElement;
+    const src = items[index].dataset.img;
+    lightboxImg.src = src;
+    lightboxImg.alt = items[index].querySelector('img')?.alt || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+    document.addEventListener('keydown', handleLightboxKeys);
+  }
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', handleLightboxKeys);
+    if(lastFocused) lastFocused.focus();
+  }
+
+  function showNext(e){
+    e?.preventDefault();
+    activeIndex = (activeIndex + 1) % items.length;
+    const src = items[activeIndex].dataset.img;
+    lightboxImg.src = src;
+    lightboxImg.alt = items[activeIndex].querySelector('img')?.alt || '';
+  }
+
+  function showPrev(e){
+    e?.preventDefault();
+    activeIndex = (activeIndex - 1 + items.length) % items.length;
+    const src = items[activeIndex].dataset.img;
+    lightboxImg.src = src;
+    lightboxImg.alt = items[activeIndex].querySelector('img')?.alt || '';
+  }
+
+  function handleLightboxKeys(e){
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowRight') showNext();
+    if(e.key === 'ArrowLeft') showPrev();
+    if(e.key === 'Tab'){
+      const focusable = lightbox.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
+      if(focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if(e.shiftKey){
+        if(document.activeElement === first){ e.preventDefault(); last.focus(); }
+      } else {
+        if(document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+    }
+  }
+
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openLightbox(i));
+    item.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') openLightbox(i); });
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
   });
-  document.getElementById('lightbox').addEventListener('click', function(e){
+
+  lightbox.addEventListener('click', function(e){
     if(e.target === this) closeLightbox();
   });
-  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  closeBtn.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', showPrev);
+  nextBtn.addEventListener('click', showNext);
 }
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
 /* ───────────────────────────────────────────
    NAV SCROLL SHADOW
@@ -379,7 +438,7 @@ function initThemeToggle(){
 }
 
 /* ───────────────────────────────────────────
-   BUTTONS (data-scroll / data-alert)
+   BUTTONS (data-scroll)
 ─────────────────────────────────────────── */
 function initButtons(){
   document.querySelectorAll('[data-scroll]').forEach(btn => {
@@ -387,9 +446,6 @@ function initButtons(){
       const target = btn.dataset.scroll;
       if(target) document.getElementById(target)?.scrollIntoView({ behavior:'smooth' });
     });
-  });
-  document.querySelectorAll('[data-alert]').forEach(btn => {
-    btn.addEventListener('click', () => alert(btn.dataset.alert));
   });
 }
 
@@ -535,4 +591,74 @@ function initJournal(){
       <span class="journal-arrow">↗</span>
     </div>
   `).join('');
+}
+
+/* ───────────────────────────────────────────
+   BACK TO TOP
+─────────────────────────────────────────── */
+function initBackToTop(){
+  const btn = document.getElementById('back-to-top');
+  if(!btn) return;
+  let ticking = false;
+  const toggle = () => {
+    btn.classList.toggle('visible', window.scrollY > 500);
+  };
+  window.addEventListener('scroll', () => {
+    if(!ticking){
+      requestAnimationFrame(() => { toggle(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive:true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+}
+
+/* ───────────────────────────────────────────
+   SCROLL PROGRESS
+─────────────────────────────────────────── */
+function initScrollProgress(){
+  const bar = document.getElementById('scroll-progress');
+  if(!bar) return;
+  let ticking = false;
+  const update = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = h > 0 ? window.scrollY / h : 0;
+    bar.style.transform = `scaleX(${Math.min(1, progress)})`;
+  };
+  window.addEventListener('scroll', () => {
+    if(!ticking){
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive:true });
+  update();
+}
+
+/* ───────────────────────────────────────────
+   TOAST NOTIFICATIONS (replaces alert())
+─────────────────────────────────────────── */
+function initToast(){
+  document.querySelectorAll('[data-alert]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast(btn.dataset.alert);
+    });
+  });
+}
+function showToast(message){
+  const container = document.getElementById('toast-container');
+  if(!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  container.appendChild(toast);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add('show'));
+  });
+  setTimeout(() => {
+    toast.classList.remove('show');
+    toast.classList.add('hiding');
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
 }

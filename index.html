@@ -36,6 +36,9 @@
 </head>
 <body>
 
+<!-- Skip to content link -->
+<a href="#main-content" class="skip-link">Skip to content</a>
+
 <!-- Loading Screen -->
 <div id="loading-screen">
   <div id="loading-label">Md Mizanur Rahman</div>
@@ -87,6 +90,8 @@
     <div class="scroll-line"></div>
   </div>
 </section>
+
+<main id="main-content">
 
 <!-- About -->
 <section id="about">
@@ -333,11 +338,24 @@
   </div>
 </section>
 
+</main>
+
 <!-- Lightbox -->
-<div id="lightbox" role="dialog" aria-label="Image lightbox">
+<div id="lightbox" role="dialog" aria-label="Image lightbox" aria-modal="true">
+  <button class="lightbox-nav lightbox-prev" aria-label="Previous image">‹</button>
   <button id="lightbox-close" aria-label="Close lightbox">✕</button>
+  <button class="lightbox-nav lightbox-next" aria-label="Next image">›</button>
   <img id="lightbox-img" src="" alt="" loading="lazy"/>
 </div>
+
+<!-- Back to top -->
+<button class="back-to-top" id="back-to-top" aria-label="Back to top" title="Back to top">↑</button>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
 <script src="script.js" defer></script>
 </body>
