@@ -455,8 +455,8 @@ function initButtons(){
 const works = [
   { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting' },
   { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development' },
-  { src: 'https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1600&q=80', title: 'Pharmacy & Patient Care' },
-  { src: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=1600&q=80', title: 'Medical Assistance' }
+  { src: 'images/mizanur-portrait.jpg', title: 'Pharmacy & Patient Care' },
+  { src: 'images/mizanur-portrait.jpg', title: 'Medical Assistance' }
 ];
 
 const education = [
