@@ -748,6 +748,49 @@ a.contact-info-item:hover { border-color: var(--accent-a); }
   50% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
 }
 
+/* ── Work Detail Modal ── */
+#work-modal {
+  position: fixed; inset: 0; z-index: 10000;
+  display: none; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+#work-modal.open { display: flex; }
+.work-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.work-modal-content {
+  position: relative; z-index: 1;
+  background: var(--surface); border: 1px solid var(--stroke);
+  border-radius: 1.5rem; overflow: hidden;
+  max-width: 560px; width: 100%;
+  max-height: 85vh; display: flex; flex-direction: column;
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn { from { opacity:0; transform: translateY(16px) scale(0.98); } to { opacity:1; transform: translateY(0) scale(1); } }
+#work-modal-img { width: 100%; height: 260px; object-fit: cover; }
+.work-modal-body { padding: 1.5rem; overflow-y: auto; }
+.work-modal-category {
+  display: inline-block; font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.15em; color: var(--accent-a);
+  background: color-mix(in srgb, var(--accent-a) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-a) 25%, transparent);
+  padding: 0.25rem 0.6rem; border-radius: 9999px; margin-bottom: 0.75rem;
+}
+#work-modal-title { font-size: 1.4rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
+#work-modal-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+#work-modal-close {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+  width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--stroke);
+  color: var(--text); font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s; z-index: 2;
+}
+#work-modal-close:hover { background: var(--stroke); transform: scale(1.05); }
+
 /* ── Lightbox ── */
 #lightbox {
   position: fixed; inset: 0; z-index: 10000;

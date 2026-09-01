@@ -79,6 +79,7 @@ function initPage(){
   initMarquee();
   initScrollReveal();
   initLightbox();
+  initWorkModal();
   initNavScroll();
   initNavLinks();
   initThemeToggle();
@@ -453,10 +454,10 @@ function initButtons(){
    CONTENT — Works & Journal (data-driven)
 ─────────────────────────────────────────── */
 const works = [
-  { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting', category: 'IT' },
-  { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development', category: 'Web' },
-  { src: 'images/mizanur-portrait.jpg', title: 'Pharmacy & Patient Care', category: 'Healthcare' },
-  { src: 'images/mizanur-portrait.jpg', title: 'Medical Assistance', category: 'Healthcare' }
+  { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting', category: 'IT', desc: 'End-to-end IT support including system maintenance, troubleshooting, network configuration and user assistance for smooth operations.' },
+  { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development', category: 'Web', desc: 'Responsive web development with clean UI, performance optimization and hands-on experience from Learning & Earning Development Project.' },
+  { src: 'images/mizanur-portrait.jpg', title: 'Pharmacy & Patient Care', category: 'Healthcare', desc: 'Managing prescriptions, patient consultations and accurate dispensing with a focus on safety and care at Dream Pharmacy and Shah Ali Pharmacy.' },
+  { src: 'images/mizanur-portrait.jpg', title: 'Medical Assistance', category: 'Healthcare', desc: 'First aid, emergency treatment and patient care experience from Al-Habib Hospital and Life Line Hospital Pvt.' }
 ];
 
 const education = [
@@ -511,15 +512,17 @@ function initWorks(){
   function renderWorks(filter){
     activeCategory = filter;
     const filtered = filter === 'All' ? works : works.filter(w => w.category === filter);
-    grid.innerHTML = filtered.map(w => `
-      <div class="work-card reveal" data-category="${w.category}">
+    grid.innerHTML = filtered.map(w => {
+      const idx = works.indexOf(w);
+      return `
+      <div class="work-card reveal" data-category="${w.category}" data-work-idx="${idx}" role="button" tabindex="0" aria-label="View ${w.title}">
         <img class="lazy-img" data-src="${w.src}" alt="${w.title}" decoding="async" width="1600" height="1200"/>
         <div class="work-card-halftone"></div>
         <div class="work-card-hover">
           <div class="work-card-label">View — <em>${w.title}</em></div>
         </div>
       </div>
-    `).join('');
+    `;}).join('');
 
     document.querySelectorAll('.works-filter-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === filter);
@@ -544,7 +547,48 @@ function initWorks(){
     renderWorks(btn.dataset.filter);
   });
 
+  // Delegate click/keyboard to open modal (survives re-renders)
+  grid.addEventListener('click', e => {
+    const card = e.target.closest('.work-card');
+    if(card) openWorkModal(Number(card.dataset.workIdx));
+  });
+  grid.addEventListener('keydown', e => {
+    if((e.key === 'Enter' || e.key === ' ') && e.target.closest('.work-card')){
+      e.preventDefault();
+      openWorkModal(Number(e.target.closest('.work-card').dataset.workIdx));
+    }
+  });
+
   renderWorks('All');
+}
+
+function openWorkModal(idx){
+  const w = works[idx];
+  if(!w) return;
+  const modal = document.getElementById('work-modal');
+  document.getElementById('work-modal-img').src = w.src;
+  document.getElementById('work-modal-img').alt = w.title;
+  document.getElementById('work-modal-category').textContent = w.category;
+  document.getElementById('work-modal-title').textContent = w.title;
+  document.getElementById('work-modal-desc').textContent = w.desc;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('work-modal-close').focus();
+}
+function closeWorkModal(){
+  const modal = document.getElementById('work-modal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function initWorkModal(){
+  const modal = document.getElementById('work-modal');
+  if(!modal) return;
+  modal.querySelector('.work-modal-backdrop').addEventListener('click', closeWorkModal);
+  document.getElementById('work-modal-close').addEventListener('click', closeWorkModal);
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modal.classList.contains('open')) closeWorkModal();
+  });
 }
 
 function initExperience(){
