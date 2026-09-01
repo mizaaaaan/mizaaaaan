@@ -453,10 +453,10 @@ function initButtons(){
    CONTENT — Works & Journal (data-driven)
 ─────────────────────────────────────────── */
 const works = [
-  { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting' },
-  { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development' },
-  { src: 'images/mizanur-portrait.jpg', title: 'Pharmacy & Patient Care' },
-  { src: 'images/mizanur-portrait.jpg', title: 'Medical Assistance' }
+  { src: 'https://images.unsplash.com/photo-1618171889969-0feeb769fe78?w=1600&q=80', title: 'IT Support & Troubleshooting', category: 'IT' },
+  { src: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&q=80', title: 'Web Development', category: 'Web' },
+  { src: 'images/mizanur-portrait.jpg', title: 'Pharmacy & Patient Care', category: 'Healthcare' },
+  { src: 'images/mizanur-portrait.jpg', title: 'Medical Assistance', category: 'Healthcare' }
 ];
 
 const education = [
@@ -504,15 +504,47 @@ const journal = [
 function initWorks(){
   const grid = document.getElementById('works-grid');
   if(!grid) return;
-  grid.innerHTML = works.map(w => `
-    <div class="work-card reveal">
-      <img class="lazy-img" data-src="${w.src}" alt="${w.title}" decoding="async" width="1600" height="1200"/>
-      <div class="work-card-halftone"></div>
-      <div class="work-card-hover">
-        <div class="work-card-label">View — <em>${w.title}</em></div>
+
+  const categories = ['All', ...new Set(works.map(w => w.category))];
+  let activeCategory = 'All';
+
+  function renderWorks(filter){
+    activeCategory = filter;
+    const filtered = filter === 'All' ? works : works.filter(w => w.category === filter);
+    grid.innerHTML = filtered.map(w => `
+      <div class="work-card reveal" data-category="${w.category}">
+        <img class="lazy-img" data-src="${w.src}" alt="${w.title}" decoding="async" width="1600" height="1200"/>
+        <div class="work-card-halftone"></div>
+        <div class="work-card-hover">
+          <div class="work-card-label">View — <em>${w.title}</em></div>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+
+    document.querySelectorAll('.works-filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+
+    initLazyLoad();
+    requestAnimationFrame(() => {
+      grid.querySelectorAll('.work-card').forEach(card => card.classList.add('visible'));
+    });
+  }
+
+  const filterContainer = document.createElement('div');
+  filterContainer.className = 'works-filter';
+  filterContainer.innerHTML = categories.map(c =>
+    `<button class="works-filter-btn${c === 'All' ? ' active' : ''}" data-filter="${c}">${c}</button>`
+  ).join('');
+  grid.parentNode.insertBefore(filterContainer, grid);
+
+  filterContainer.addEventListener('click', e => {
+    const btn = e.target.closest('.works-filter-btn');
+    if(!btn || btn.dataset.filter === activeCategory) return;
+    renderWorks(btn.dataset.filter);
+  });
+
+  renderWorks('All');
 }
 
 function initExperience(){
